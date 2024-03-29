@@ -1,73 +1,91 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Bookstore Backend API Documentation
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Introduction
+This documentation provides an overview of the API for the Bookstore application. It covers the available endpoints, request/response formats, and error codes.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Base URL
+All API requests are made to: `http://localhost:3000/`
 
-## Description
+## Endpoints
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Books
 
-## Installation
+- `GET /books`: Retrieves a list of all books in the bookstore.
+  - Request: No parameters
+  - Response: An array of book objects
+  - Example: `GET /books`
 
-```bash
-$ yarn install
-```
+- `GET /books/{id}`: Retrieves a specific book by its ID.
+  - Request: `id` (path parameter)
+  - Response: A book object
+  - Example: `GET /books/1`
 
-## Running the app
+- `POST /books`: Creates a new book in the bookstore.
+  - Request: A JSON object containing `title`, `author`, `price`, and `tags`
+  - Response: The created book object
+  - Example: `POST /books` with `{ "title": "New Book", "author": "Author Name", "price": 19.99, "tags": ["fiction", "science"] }`
 
-```bash
-# development
-$ yarn run start
+- `PUT /books/{id}`: Updates an existing book.
+  - Request: `id` (path parameter) and a JSON object containing the fields to update
+  - Response: The updated book object
+  - Example: `PUT /books/1` with `{ "price": 9.99 }`
 
-# watch mode
-$ yarn run start:dev
+- `DELETE /books/{id}`: Deletes a book from the bookstore.
+  - Request: `id` (path parameter)
+  - Response: A message indicating the result of the operation
+  - Example: `DELETE /books/1`
 
-# production mode
-$ yarn run start:prod
-```
+### Users
 
-## Test
+- `POST /login`: Logs in a user.
+  - Request: A JSON object containing `username` and `password`
+  - Response: A JSON object containing the access token
 
-```bash
-# unit tests
-$ yarn run test
+- `GET /customers/me`: Retrieves the current user's information.
+  - Request: No parameters, but requires a bearer token for authentication
+  - Response: A JSON object containing the user's information
 
-# e2e tests
-$ yarn run test:e2e
+- `DELETE /logout`: Logs out a user.
+  - Request: No parameters, but requires a bearer token for authentication
+  - Response: A JSON object containing the access token
 
-# test coverage
-$ yarn run test:cov
-```
+- `POST /signup`: Signs up a new user.
+  - Request: A JSON object containing `username` and `password`
+  - Response: A JSON object containing the user's information
 
-## Support
+### Customers
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- `POST /customers/`: Creates a new customer.
+  - Request: A JSON object containing `name` and `points`, and requires a bearer token for authentication
+  - Response: A JSON object containing the created customer's information
 
-## Stay in touch
+- `GET /customers/`: Retrieves a list of all customers.
+  - Request: No parameters, but requires a bearer token for authentication
+  - Response: A JSON array containing the list of customers
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Orders
 
-## License
+- `POST /orders`: Creates a new order.
+  - Request: A JSON object containing `customerId`, `bookId`, and `quantity`, and requires a bearer token for authentication
+  - Response: A JSON object containing the created order's information
 
-Nest is [MIT licensed](LICENSE).
+- `GET /orders`: Retrieves a list of all orders.
+  - Request: No parameters, but requires a bearer token for authentication
+  - Response: A JSON array containing the list of orders
+
+- `GET /orders/{id}`: Retrieves a specific order by its ID.
+  - Request: `id` (path parameter), and requires a bearer token for authentication
+  - Response: A JSON object containing the order's information
+
+## Error Codes
+- `400 Bad Request`: The request was invalid or cannot be served. The exact error should be explained in the error payload. E.g. "`title` is missing."
+- `401 Unauthorized`: The request requires user authentication.
+- `403 Forbidden`: The server understood the request, but it refuses to authorize it.
+- `404 Not Found`: The requested resource could not be found.
+- `500 Internal Server Error`: An error occurred in the server.
+
+## Rate Limiting
+The API has a rate limit of 1000 requests per hour. If the limit is exceeded, the server will respond with a `429 Too Many Requests` status code.
+
+## Authentication
+Some endpoints require authentication. This is done via a bearer token sent in the `Authorization` header. E.g. `Authorization: Bearer your-token-here`
