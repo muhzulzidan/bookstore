@@ -3,7 +3,10 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    //Add your origins here
+    origin: "https://frontend-bookstore-nextjs.vercel.app",
+  });
   await app.listen(3000);
 }
 bootstrap();
