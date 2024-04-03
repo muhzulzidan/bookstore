@@ -1,4 +1,4 @@
-# Bookstore Backend API Documentation
+# Bookstore Backend using Nestjs
 
 ## Introduction
 This documentation provides an overview of the API for the Bookstore application. It covers the available endpoints, request/response formats, and error codes.
